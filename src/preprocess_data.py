@@ -7,13 +7,14 @@ def prepare_emoji_images(csv_path="data/emoji.csv", output_dir="data/emoji"):
     os.makedirs(output_dir, exist_ok=True)
     df = pd.read_csv(csv_path)
 
-    # 选择提取Apple的表情
+    # 你可以选择只提取某一列品牌的表情，比如 Apple
     brand = "Apple"  # 也可以改成 Google、Facebook 等
 
     for i, row in df.iterrows():
         b64_str = row[brand]
         if isinstance(b64_str, str) and b64_str.startswith("data:image"):
             try:
+                # 去掉前缀 data:image/png;base64,
                 img_data = b64_str.split(",")[1]
                 img_bytes = base64.b64decode(img_data)
                 img_path = os.path.join(output_dir, f"{i:04d}_{brand}.png")
